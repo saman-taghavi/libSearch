@@ -21,7 +21,7 @@
           persistent-hint
           prepend-inner-icon="mdi-magnify"
           :hint="totalResults"
-          @keypress.enter="search"
+          @keypress.enter="simpleSearch"
           rounded
           :disabled="isLoading"
         >
