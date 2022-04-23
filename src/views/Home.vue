@@ -2,7 +2,7 @@
   <div>
     <component :is="currentSearch" />
     <!-- search result -->
-    <SearchResult v-if="!searchResults" />
+    <SearchResult v-if="!!Object.keys(searchResults).length" />
     <v-row v-else no-gutters class="pa-5" justify="space-around">
       <v-col cols="3" class="pa-1" v-for="n in 14" :key="n">
         <v-img
