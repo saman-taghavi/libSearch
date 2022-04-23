@@ -119,6 +119,7 @@ export default {
       let params = {
         searchtext: this.searchText,
         doctype: this.formatedSelectedDocTypes,
+        first: 0,
       };
       this.simpleSearch(params);
     },

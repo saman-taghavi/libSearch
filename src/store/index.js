@@ -125,8 +125,10 @@ export default new Vuex.Store({
       state.isAdvSearch = isAdvSearch;
     },
     SET_SIMPLE_SEARCH_DOCTYPES(state, doctypes) {
-      console.log('%c doctypes =>', 'background: #2ecc71;border-radius: 0.5em;color: white;font-weight: bold;padding: 2px 0.5em', doctypes);
       state.simpleSearch.selectedDocTypes = doctypes
+    },
+    SET_SIMPLE_SEARCH_PARAMS(state, params) {
+      state.simpleSearch.params = { ...state.simpleSearch.params, ...params }
     }
   },
 
@@ -142,17 +144,14 @@ export default new Vuex.Store({
     },
     async simpleSearch({ dispatch, commit, state }, params) {
       commit("SET_SEARCH_TYPE", { isAdvSearch: false });
+      commit("SET_SIMPLE_SEARCH_PARAMS", params);
       dispatch("updateLoading", true);
-      let apiParams = {
-        ...state.simpleSearch.params,
-        ...params
-      }
 
       try {
         let { data } = await axios
           .get("recordsbydoctype",
             {
-              params: apiParams
+              params: state.simpleSearch.params
             }
           )
 
@@ -178,6 +177,20 @@ export default new Vuex.Store({
     },
     searchResults(state) {
       return state.searchResult
+    },
+    totalResultsNumber(state, getters) {
+      return Number(getters.searchResults?.totalResult) ?? 0
+    },
+    currentPage(state) {
+      if (state.isAdvSearch) {
+        return 'NotImplemented'
+      }
+      let params = state.simpleSearch.params
+      return Math.ceil(params.first / params.size)
+    },
+    totalPages(state) {
+      let results = state.searchResult?.totalResult ?? 0
+      return Math.ceil(results / 50);
     },
   },
 

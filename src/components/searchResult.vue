@@ -1,42 +1,23 @@
 <template>
   <div>
-    <v-alert class="pa-6 ma-2" dismissible>
-      انتخاب نحوه نمایش نتایج
+    <v-alert class="pa-1 ma-2 text-center" color="green">
+      انتخاب نحوه نمایش نتایج یک حالت را انتخاب کنید
       <v-radio-group v-model="radio" mandatory row>
         <v-radio label="استایل 1" value="1"></v-radio>
         <v-radio label="استایل 2" value="2"></v-radio>
       </v-radio-group>
     </v-alert>
-    <v-row dense no-gutters justify="space-between">
-      <v-col cols="1">
-        <v-btn
-          @click="prev"
-          :disabled="!isPrevEnabled"
-          x-large
-          icon
-          color="primary"
-        >
-          <v-icon>mdi-chevron-right</v-icon>
-        </v-btn>
+    <v-row dense justify="space-between">
+      <v-col v-if="totalResultsNumber > 1" class="text-center">
+        <v-pagination
+          v-model="page"
+          @click="goPage(page)"
+          :length="totalPages"
+          circle
+        ></v-pagination>
       </v-col>
-      <v-col align="center" cols="6">
-        <p class="mb-0">
-          صفحه {{ totalPages.current }}
-          از
-          {{ totalPages.total }}
-          صفحه
-        </p>
-      </v-col>
-      <v-col cols="1">
-        <v-btn
-          x-large
-          icon
-          color="primary"
-          :disabled="!isNextEnabled"
-          @click="next"
-        >
-          <v-icon>mdi-chevron-left</v-icon>
-        </v-btn>
+      <v-col v-else>
+        <v-alert class="text-center" color="green">نتیجه ای پیدا نشد!</v-alert>
       </v-col>
     </v-row>
     <v-row
@@ -167,32 +148,28 @@ export default {
     };
   },
   computed: {
-    ...mapState(["isAdvSearch", "simpleSearch", "docTypes", "isLoading"]),
-    ...mapGetters(["searchResults"]),
-    totalPages() {
-      if (this.simpleSearch.searchResult?.totalResult) {
-        return {
-          total: Math.ceil(this.simpleSearch.searchResult.totalResult / 50) + 1,
-          current: Math.ceil(this.simpleSearch.params.first / 50) + 1,
-        };
-      }
-      return "";
-    },
-    isNextEnabled() {
-      if (this.isLoading || this.totalPages.current === this.totalPages.total) {
-        return false;
-      }
-      return true;
-    },
-    isPrevEnabled() {
-      if (this.isLoading || this.totalPages.current <= 1) {
-        return false;
-      }
-      return true;
+    ...mapState(["isAdvSearch", "docTypes", "isLoading"]),
+    ...mapGetters([
+      "searchResults",
+      "currentPage",
+      "totalPages",
+      "totalResultsNumber",
+    ]),
+
+    page: {
+      get() {
+        return this.currentPage + 1;
+      },
+      set(value) {
+        if (this.isAdvSearch) {
+          return;
+        }
+        this.simpleSearch({ first: (value - 1) * 50 });
+      },
     },
   },
   methods: {
-    ...mapActions(["getPage"]),
+    ...mapActions(["getPage", "simpleSearch"]),
     goTolib(item) {
       let url = `http://library.alzahra.ac.ir:8080/site/catalogue/${item.id}`;
       window.open(url, "_blank").focus();
@@ -210,11 +187,12 @@ export default {
       );
       return materialType.name;
     },
-    next() {
-      this.getPage(50);
-    },
-    prev() {
-      this.getPage(-50);
+    goPage(x) {
+      console.log(
+        "%c x =>",
+        "background: #2ecc71;border-radius: 0.5em;color: white;font-weight: bold;padding: 2px 0.5em",
+        x
+      );
     },
   },
 };
