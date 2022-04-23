@@ -8,18 +8,10 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     basePath: import.meta.env.BASE_URL,
-    version: "1.0.0",
+    searchResult: {},
     simpleSearch: {
-      searchResult: [],
       searchText: "",
       selectedDocTypes: [],
-      params: {
-        SearchField: "title",
-        searchtext: "",
-        size: "50",
-        first: "0",
-        doctype: "",
-      },
     },
     docTypes: [
       {
@@ -111,29 +103,17 @@ export default new Vuex.Store({
         code: "FA",
       },
     ],
-    totalResult: {
-      simple: "",
-      Adv: "",
-    },
+    totalResult: '',
     isAdvSearch: false,
     isLoading: false,
   },
 
   mutations: {
-    SET_DOCTYPES(state, value) {
-      state.simpleSearch.selectedDocTypes = value;
-    },
-    UPDATE_SIMPLE_SEARCH_RESULT(state, results) {
-      state.simpleSearch.searchResult = results;
+    UPDATE_SEARCH_RESULT(state, results) {
+      state.searchResult = results;
     },
     SET_LOADING(state, loading) {
       state.isLoading = loading;
-    },
-    SET_SEARCH_TEXT(state, value) {
-      state.simpleSearch.searchText = value;
-    },
-    SET_SIMPLE_SEARCH_PARAMS(state, params) {
-      state.simpleSearch.params = params;
     },
     SET_SEARCH_TYPE(state, { isAdvSearch }) {
       state.isAdvSearch = isAdvSearch;
@@ -141,58 +121,56 @@ export default new Vuex.Store({
   },
 
   actions: {
-    updateSimpleSearchResult({ commit }, results) {
-      commit("UPDATE_SIMPLE_SEARCH_RESULT", results);
-    },
     updateLoading({ commit }, loading) {
       commit("SET_LOADING", loading);
     },
-    getPage({ dispatch, commit },first) {
+    getPage({ dispatch, commit }, first) {
       dispatch("searchTitle", {
         ...this.state.simpleSearch.params,
         first: Number(this.state.simpleSearch.params.first) + first,
       });
     },
-    searchTitle({ dispatch, commit }, params) {
-      commit("SET_SEARCH_TYPE", false);
-      commit("SET_SIMPLE_SEARCH_PARAMS", params);
+    async searchTitle({ dispatch, commit }, params) {
+      commit("SET_SEARCH_TYPE", { isAdvSearch: false });
       dispatch("updateLoading", true);
-      axios
-        .get("recordsbydoctype", {
-          params,
-        })
-        .then((res) => {
-          console.log(
-            `%c  res.data `,
-            "background: #2ecc71;border-radius: 0.5em;color: white;font-weight: bold;padding: 2px 0.5em",
-            { res: res.data }
-          );
-          dispatch("updateSimpleSearchResult", res.data);
-        })
-        .catch((err) => {
-          console.log(
-            `%c  err `,
-            "background: #2ecc71;border-radius: 0.5em;color: white;font-weight: bold;padding: 2px 0.5em",
-            { error: err }
-          );
-        })
-        .finally(() => {
-          dispatch("updateLoading", false);
-        });
-    },
+      let apiParams = {
+        SearchField: "title",
+        size: "50",
+        first: "0",
+        workgroup: 20,
+        ...params
+      }
+
+      try {
+        let { data } = await axios
+          .get("recordsbydoctype",
+            {
+              params: apiParams
+            }
+          )
+
+        commit("UPDATE_SEARCH_RESULT", data);
+
+      } catch (error) {
+        console.log(
+          `%c  err `,
+          "background: #2ecc71;border-radius: 0.5em;color: white;font-weight: bold;padding: 2px 0.5em",
+          { error }
+        );
+      } finally {
+        dispatch("updateLoading", false);
+
+      }
+    }
   },
   getters: {
-    simpleTotalResults(state) {
-      return state.simpleSearch.searchResult?.totalResult
-        ? `تعداد نتایج ${state.simpleSearch.searchResult.totalResult}`
-        : state.simpleSearch.searchResult?.totalResult;
+    totalResults(state) {
+      return state.searchResult?.totalResult
+        ? `تعداد نتایج ${state.searchResult.totalResult}`
+        : state.searchResult?.totalResult;
     },
     searchResults(state) {
-      return state.isAdvSearch
-        ? "noting yet"
-        : state.simpleSearch?.searchResult
-          ? state.simpleSearch?.searchResult
-          : "";
+      return state.searchResult
     },
   },
 

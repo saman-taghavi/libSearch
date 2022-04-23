@@ -86,9 +86,14 @@ import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 
 export default {
   name: "simpleSearch",
+  data() {
+    return {
+      searchText: "",
+    };
+  },
   computed: {
     ...mapState(["docTypes", "isLoading"]),
-    ...mapGetters({ totalResults: "simpleTotalResults" }),
+    ...mapGetters({ totalResults: "totalResults" }),
     selectedDocTypes: {
       get() {
         return this.$store.state.simpleSearch.selectedDocTypes;
@@ -97,14 +102,7 @@ export default {
         this.$store.commit("SET_DOCTYPES", value);
       },
     },
-    searchText: {
-      get() {
-        return this.$store.state.simpleSearch.searchText;
-      },
-      set(value) {
-        this.$store.commit("SET_SEARCH_TEXT", value);
-      },
-    },
+
     formatedSelectedDocTypes() {
       return this.selectedDocTypes.length > 1
         ? this.selectedDocTypes.reduce(
@@ -116,14 +114,10 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["updateSimpleSearchResult", "updateLoading", "searchTitle"]),
-    ...mapMutations(["SET_SIMPLE_SEARCH_PARAMS", "SET_SEARCH_TYPE"]),
+    ...mapActions(["searchTitle"]),
     simpleSearch() {
       let params = {
-        SearchField: "title",
         searchtext: this.searchText,
-        size: "50",
-        first: "0",
         doctype: this.formatedSelectedDocTypes,
       };
       this.searchTitle(params);
