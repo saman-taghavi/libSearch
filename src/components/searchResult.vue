@@ -29,6 +29,7 @@
     >
       <v-col cols="12">
         <v-virtual-scroll
+          v-if="!isLoading"
           :bench="50"
           :items="searchResults.biblioList"
           max-height="70vh"
@@ -77,6 +78,14 @@
             <v-divider></v-divider>
           </template>
         </v-virtual-scroll>
+        <div v-else class="text-center">
+          <v-progress-circular
+            :size="70"
+            :width="7"
+            color="green"
+            indeterminate
+          ></v-progress-circular>
+        </div>
       </v-col>
     </v-row>
     <v-row
@@ -133,6 +142,16 @@
             </v-card>
           </v-col>
         </v-row>
+      </v-col>
+    </v-row>
+    <v-row dense justify="space-between">
+      <v-col v-if="totalResultsNumber > 1" class="text-center">
+        <v-pagination
+          v-model="page"
+          @click="goPage(page)"
+          :length="totalPages"
+          circle
+        ></v-pagination>
       </v-col>
     </v-row>
   </div>
