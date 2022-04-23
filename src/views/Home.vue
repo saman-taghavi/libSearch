@@ -1,30 +1,19 @@
 <template>
   <div>
-    <v-slide-group
-      v-model="model"
-      mandatory
-      class="pa-4"
-      center-active
-      show-arrows
-    >
-      <v-slide-item
-        class="yellow"
-        v-for="n in 14"
-        :key="n"
-        v-slot="{ active, toggle }"
-      >
-        <v-img
-          @click="toggle"
-          :class="active ? '' : 'grey'"
-          class="pa-2 rounded-circle"
-          max-width="184"
-          :src="getImageSrc(n)"
-        ></v-img>
-      </v-slide-item>
-    </v-slide-group>
     <component :is="currentSearch" />
     <!-- search result -->
-    <SearchResult />
+    <SearchResult v-if="!searchResults" />
+    <v-row v-else no-gutters class="pa-5" justify="space-around">
+      <v-col cols="3" class="pa-1" v-for="n in 14" :key="n">
+        <v-img
+          v-ripple
+          @click="log(n)"
+          :aspect-ratio="16 / 9"
+          :src="getImageSrc(n)"
+          contain
+        ></v-img>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
@@ -36,16 +25,17 @@ import { mapGetters, mapState } from "vuex";
 export default {
   name: "Home",
 
-  components: { SimpleSearch, SearchResult,advSearch },
+  components: { SimpleSearch, SearchResult, advSearch },
   data() {
     return {
       model: "",
-      basePath: import.meta.env.BASE_URL,
       loading: false,
+      show: false,
     };
   },
   computed: {
-    ...mapState(["isAdvSearch"]),
+    ...mapState(["isAdvSearch", "basePath"]),
+    ...mapGetters(["searchResults"]),
     currentSearch() {
       return this.isAdvSearch ? "advSearch" : "SimpleSearch";
     },
@@ -53,6 +43,13 @@ export default {
   methods: {
     getImageSrc(n) {
       return `${this.basePath}images/${n}.jpg`;
+    },
+    log(n) {
+      console.log(
+        "%c n =>",
+        "background: #2ecc71;border-radius: 0.5em;color: white;font-weight: bold;padding: 2px 0.5em",
+        { n }
+      );
     },
   },
 };
