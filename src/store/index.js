@@ -12,6 +12,12 @@ export default new Vuex.Store({
     simpleSearch: {
       searchText: "",
       selectedDocTypes: [],
+      params: {
+        SearchField: "title",
+        size: "50",
+        first: 0,
+        workgroup: 20,
+      }
     },
     docTypes: [
       {
@@ -118,6 +124,10 @@ export default new Vuex.Store({
     SET_SEARCH_TYPE(state, { isAdvSearch }) {
       state.isAdvSearch = isAdvSearch;
     },
+    SET_SIMPLE_SEARCH_DOCTYPES(state, doctypes) {
+      console.log('%c doctypes =>', 'background: #2ecc71;border-radius: 0.5em;color: white;font-weight: bold;padding: 2px 0.5em', doctypes);
+      state.simpleSearch.selectedDocTypes = doctypes
+    }
   },
 
   actions: {
@@ -130,14 +140,11 @@ export default new Vuex.Store({
         first: Number(this.state.simpleSearch.params.first) + first,
       });
     },
-    async searchTitle({ dispatch, commit }, params) {
+    async simpleSearch({ dispatch, commit, state }, params) {
       commit("SET_SEARCH_TYPE", { isAdvSearch: false });
       dispatch("updateLoading", true);
       let apiParams = {
-        SearchField: "title",
-        size: "50",
-        first: "0",
-        workgroup: 20,
+        ...state.simpleSearch.params,
         ...params
       }
 

@@ -21,7 +21,7 @@
           persistent-hint
           prepend-inner-icon="mdi-magnify"
           :hint="totalResults"
-          @keypress.enter="simpleSearch"
+          @keypress.enter="search"
           rounded
           :disabled="isLoading"
         >
@@ -64,7 +64,7 @@
     <v-row justify="center" align="center" align-content="center" no-gutters>
       <!-- search btn -->
       <v-col md="2" cols="3" order="3" align="center">
-        <v-btn @click="simpleSearch" :disabled="isLoading" color="success"
+        <v-btn @click="search" :disabled="isLoading" color="success"
           >جستجو</v-btn
         >
       </v-col>
@@ -82,7 +82,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   name: "simpleSearch",
@@ -99,7 +99,7 @@ export default {
         return this.$store.state.simpleSearch.selectedDocTypes;
       },
       set(value) {
-        this.$store.commit("SET_DOCTYPES", value);
+        this.$store.commit("SET_SIMPLE_SEARCH_DOCTYPES", value);
       },
     },
 
@@ -114,13 +114,13 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["searchTitle"]),
-    simpleSearch() {
+    ...mapActions(["simpleSearch"]),
+    search() {
       let params = {
         searchtext: this.searchText,
         doctype: this.formatedSelectedDocTypes,
       };
-      this.searchTitle(params);
+      this.simpleSearch(params);
     },
   },
 };
