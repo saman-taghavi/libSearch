@@ -158,7 +158,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 export default {
   name: "searchResult",
   data() {
@@ -168,13 +168,7 @@ export default {
   },
   computed: {
     ...mapState(["isAdvSearch", "simpleSearch", "docTypes", "isLoading"]),
-    searchResults() {
-      return this.isAdvSearch
-        ? "noting yet"
-        : this.simpleSearch?.searchResult
-        ? this.simpleSearch?.searchResult
-        : "";
-    },
+    ...mapGetters(["searchResults"]),
     totalPages() {
       if (this.simpleSearch.searchResult?.totalResult) {
         return {
@@ -226,5 +220,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

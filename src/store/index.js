@@ -7,6 +7,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
+    basePath: import.meta.env.BASE_URL,
     version: "1.0.0",
     simpleSearch: {
       searchResult: [],
@@ -185,6 +186,13 @@ export default new Vuex.Store({
       return state.simpleSearch.searchResult?.totalResult
         ? `تعداد نتایج ${state.simpleSearch.searchResult.totalResult}`
         : state.simpleSearch.searchResult?.totalResult;
+    },
+    searchResults(state) {
+      return state.isAdvSearch
+        ? "noting yet"
+        : state.simpleSearch?.searchResult
+          ? state.simpleSearch?.searchResult
+          : "";
     },
   },
 
