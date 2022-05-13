@@ -67,15 +67,23 @@
           >جستجو</v-btn
         >
       </v-col>
+      <v-col md="2" cols="3" order="3" align="center">
+        <etoX></etoX>
+      </v-col>
     </v-row>
   </div>
 </template>
 
 <script>
+import etoX from "@/components/exportExcel.vue";
+
 import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   name: "simpleSearch",
+  components: {
+    etoX,
+  },
   data() {
     return {
       searchText: "",
@@ -83,7 +91,7 @@ export default {
   },
   computed: {
     ...mapState(["docTypes", "isLoading"]),
-    ...mapGetters({ totalResults: "totalResults" }),
+    ...mapGetters({ totalResults: "totalResults", }),
     selectedDocTypes: {
       get() {
         return this.$store.state.simpleSearch.selectedDocTypes;
