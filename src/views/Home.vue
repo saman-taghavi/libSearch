@@ -4,7 +4,7 @@
     <!-- search result -->
     <div v-if="!!Object.keys(searchResults).length">
       <v-row dense justify="space-around">
-        <v-col cols="4">
+        <v-col v-if="searchResults['biblioList']" cols="4">
           <v-card class="mx-auto">
             <v-card-title>پایگاه منابع</v-card-title>
             <v-divider></v-divider>
