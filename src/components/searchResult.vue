@@ -1,12 +1,5 @@
 <template>
   <div>
-    <v-alert class="pa-1 ma-2 text-center" color="green">
-      انتخاب نحوه نمایش نتایج یک حالت را انتخاب کنید
-      <v-radio-group v-model="radio" mandatory row>
-        <v-radio label="استایل 1" value="1"></v-radio>
-        <v-radio label="استایل 2" value="2"></v-radio>
-      </v-radio-group>
-    </v-alert>
     <v-row dense justify="space-between">
       <v-col v-if="totalResultsNumber > 1" class="text-center">
         <v-pagination
@@ -21,11 +14,10 @@
       </v-col>
     </v-row>
     <v-row
-      v-if="radio === '1'"
+      v-if="radio === 1"
       justify="center"
       align="center"
       align-content="center"
-      class="pt-6"
     >
       <v-col cols="12">
         <v-virtual-scroll
@@ -167,7 +159,7 @@ export default {
   name: "searchResult",
   data() {
     return {
-      radio: "",
+      radio: 1,
     };
   },
   computed: {
