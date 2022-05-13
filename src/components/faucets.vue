@@ -1,12 +1,7 @@
 <template>
   <v-card class="mx-auto">
-    <v-card-title
-      >{{ title }}
-
-      {{ typeof faucet }}
-    </v-card-title>
+    <v-card-title>{{ title }} </v-card-title>
     <v-divider></v-divider>
-
     <v-virtual-scroll
       v-if="!isLoading"
       :bench="10"
@@ -22,7 +17,9 @@
               <p v-if="item.farsiLabel" class="mb-0">{{ item.farsiLabel }}</p>
               <p
                 dir="rtl"
-                v-if="item.internalName === 'author'"
+                v-if="
+                  ['author', 'subject', 'publisher'].includes(item.internalName)
+                "
                 class="mb-0 text-truncate text-right"
                 style="max-width: 100vh"
               >
@@ -44,7 +41,7 @@ import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   name: "faucet",
-  props: ["faucet", "title"],
+  props: ["faucet", "title", ],
   computed: {
     ...mapState(["isAdvSearch", "docTypes", "isLoading"]),
   },

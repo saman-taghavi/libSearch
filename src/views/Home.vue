@@ -5,10 +5,25 @@
     <div v-if="!!Object.keys(searchResults).length">
       <v-row dense justify="space-around">
         <v-col cols="4">
-          <!-- <faucets
-            :faucet="searchResults['organizationFacet']"
-            title="پایگاه منابع"
-          ></faucets> -->
+          <v-card class="mx-auto">
+            <v-card-title>پایگاه منابع</v-card-title>
+            <v-divider></v-divider>
+            <v-card-text class="pa-0">
+              <v-list-item>
+                <v-list-item-content>
+                  <v-list-item-subtitle>
+                    <p
+                      v-if="searchResults['organizationFacet'].farsiLabel"
+                      class="mb-0 text-truncate"
+                    >
+                      {{ searchResults["organizationFacet"].farsiLabel }}
+                    </p>
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+                ({{ searchResults["organizationFacet"].count }})
+              </v-list-item>
+            </v-card-text>
+          </v-card>
           <faucets
             class="mt-2"
             :faucet="searchResults['docTypeFacet']"
@@ -18,6 +33,16 @@
             class="mt-2"
             :faucet="searchResults['authorFacet']"
             title="پدیدآوران مرتبط"
+          ></faucets>
+          <faucets
+            class="mt-2"
+            :faucet="searchResults['subjectFacet']"
+            title="موضوعات مرتبط"
+          ></faucets>
+          <faucets
+            class="mt-2"
+            :faucet="searchResults['publisherFacet']"
+            title="ناشران مرتبط"
           ></faucets>
         </v-col>
         <v-col cols="7">
