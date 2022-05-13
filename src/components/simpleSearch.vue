@@ -60,15 +60,35 @@
       </v-col>
     </v-row>
 
-    <v-row justify="center" align="center" align-content="center" no-gutters>
+    <v-row
+      justify="space-around"
+      align="center"
+      align-content="center"
+      no-gutters
+    >
       <!-- search btn -->
       <v-col md="2" cols="3" order="3" align="center">
         <v-btn @click="search" :disabled="isLoading" color="success"
           >جستجو</v-btn
         >
       </v-col>
-      <v-col md="2" cols="3" order="3" align="center">
+      <v-col
+        v-if="searchResults['biblioList']"
+        md="2"
+        cols="3"
+        order="3"
+        align="center"
+      >
         <etoX></etoX>
+      </v-col>
+      <v-col
+        v-if="searchResults['biblioList']"
+        md="4"
+        cols="12"
+        order="3"
+        align="center"
+      >
+        <sorter></sorter>
       </v-col>
     </v-row>
   </div>
@@ -78,20 +98,23 @@
 import etoX from "@/components/exportExcel.vue";
 
 import { mapActions, mapGetters, mapState } from "vuex";
+import Sorter from "./sorter.vue";
 
 export default {
   name: "simpleSearch",
   components: {
     etoX,
+    Sorter,
   },
-  data() {
+
+  Sorterdata() {
     return {
       searchText: "",
     };
   },
   computed: {
     ...mapState(["docTypes", "isLoading"]),
-    ...mapGetters({ totalResults: "totalResults", }),
+    ...mapGetters(["totalResults", "searchResults"]),
     selectedDocTypes: {
       get() {
         return this.$store.state.simpleSearch.selectedDocTypes;

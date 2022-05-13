@@ -131,6 +131,9 @@ export default new Vuex.Store({
     SET_SIMPLE_SEARCH_PARAMS(state, params) {
       state.simpleSearch.params = { ...state.simpleSearch.params, ...params };
     },
+    SET_SORTED_RESULT(state, sortedbiblio) {
+      state.searchResult["biblioList"] = sortedbiblio;
+    },
   },
 
   actions: {
@@ -166,6 +169,32 @@ export default new Vuex.Store({
       } finally {
         dispatch("updateLoading", false);
       }
+    },
+    sortResult({ commit, state }, sortData) {
+      let unsortedbiblio = state.searchResult["biblioList"];
+
+      let sortedbiblio =
+        sortData.order === 1
+          ? unsortedbiblio.sort((x, y) => {
+              if (x[sortData.by] === undefined) {
+                return 1;
+              }
+              if (y[sortData.by] === undefined) {
+                return -1;
+              }
+              return x[sortData.by].localeCompare(y[sortData.by], "fa");
+            })
+          : unsortedbiblio.sort((x, y) => {
+              if (x[sortData.by] === undefined) {
+                return 1;
+              }
+              if (y[sortData.by] === undefined) {
+                return -1;
+              }
+              return y[sortData.by].localeCompare(x[sortData.by], "fa");
+            });
+
+      commit("SET_SORTED_RESULT", sortedbiblio);
     },
   },
   getters: {
