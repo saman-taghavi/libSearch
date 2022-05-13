@@ -2,7 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "@/services/api";
 import toast from "./moduleToast";
-
+import searchFields from "@/constants/searchFields";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -13,11 +13,11 @@ export default new Vuex.Store({
       searchText: "",
       selectedDocTypes: [],
       params: {
-        SearchField: "title",
+        SearchField: "",
         size: "50",
         first: 0,
         workgroup: 20,
-      }
+      },
     },
     docTypes: [
       {
@@ -109,9 +109,10 @@ export default new Vuex.Store({
         code: "FA",
       },
     ],
-    totalResult: '',
+    totalResult: "",
     isAdvSearch: false,
     isLoading: false,
+    advSearchFields: searchFields,
   },
 
   mutations: {
@@ -125,14 +126,17 @@ export default new Vuex.Store({
       state.isAdvSearch = isAdvSearch;
     },
     SET_SIMPLE_SEARCH_DOCTYPES(state, doctypes) {
-      state.simpleSearch.selectedDocTypes = doctypes
+      state.simpleSearch.selectedDocTypes = doctypes;
     },
     SET_SIMPLE_SEARCH_PARAMS(state, params) {
-      state.simpleSearch.params = { ...state.simpleSearch.params, ...params }
-    }
+      state.simpleSearch.params = { ...state.simpleSearch.params, ...params };
+    },
   },
 
   actions: {
+    setSearchType({ commit }, type) {
+      commit("SET_SEARCH_TYPE", type);
+    },
     updateLoading({ commit }, loading) {
       commit("SET_LOADING", loading);
     },
@@ -148,15 +152,11 @@ export default new Vuex.Store({
       dispatch("updateLoading", true);
 
       try {
-        let { data } = await axios
-          .get("recordsbydoctype",
-            {
-              params: state.simpleSearch.params
-            }
-          )
+        let { data } = await axios.get("recordsbydoctype", {
+          params: state.simpleSearch.params,
+        });
 
         commit("UPDATE_SEARCH_RESULT", data);
-
       } catch (error) {
         console.log(
           `%c  err `,
@@ -165,9 +165,8 @@ export default new Vuex.Store({
         );
       } finally {
         dispatch("updateLoading", false);
-
       }
-    }
+    },
   },
   getters: {
     totalResults(state) {
@@ -176,20 +175,20 @@ export default new Vuex.Store({
         : state.searchResult?.totalResult;
     },
     searchResults(state) {
-      return state.searchResult
+      return state.searchResult;
     },
     totalResultsNumber(state, getters) {
-      return Number(getters.searchResults?.totalResult) ?? 0
+      return Number(getters.searchResults?.totalResult) ?? 0;
     },
     currentPage(state) {
       if (state.isAdvSearch) {
-        return 'NotImplemented'
+        return "NotImplemented";
       }
-      let params = state.simpleSearch.params
-      return Math.ceil(params.first / params.size)
+      let params = state.simpleSearch.params;
+      return Math.ceil(params.first / params.size);
     },
     totalPages(state) {
-      let results = state.searchResult?.totalResult ?? 0
+      let results = state.searchResult?.totalResult ?? 0;
       return Math.ceil(results / 50);
     },
   },
