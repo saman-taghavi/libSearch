@@ -8,7 +8,7 @@
       align-content="center"
       order="1"
     >
-      <v-col cols="4" order="1" justify="center" align="center">
+      <v-col cols="6" order="1" justify="center" align="center">
         <v-text-field
           v-model="searchText"
           clearable
@@ -16,7 +16,6 @@
           label="جستجو"
           id="search "
           color="#469213"
-          class="pt-7"
           solo
           persistent-hint
           prepend-inner-icon="mdi-magnify"
@@ -35,7 +34,7 @@
           </template>
         </v-text-field>
       </v-col>
-      <v-col cols="4" order="2">
+      <v-col cols="6" order="2">
         <v-autocomplete
           v-model="selectedDocTypes"
           :items="docTypes"
@@ -49,7 +48,7 @@
           deletable-chips
           hide-no-data
           hide-spin-buttons
-          class="pt-md-6 pr-md-2"
+          class="pr-2"
           rounded
           color="#469213"
           :menu-props="{
@@ -66,15 +65,6 @@
       <v-col md="2" cols="3" order="3" align="center">
         <v-btn @click="search" :disabled="isLoading" color="success"
           >جستجو</v-btn
-        >
-      </v-col>
-      <!-- Adv seaarch btn -->
-      <v-col md="2" cols="6" order="3" align="center">
-        <v-btn
-          @click="SET_SEARCH_TYPE({ isAdvSearch: true })"
-          :disabled="isLoading"
-          color="success"
-          >جستجوی پیشرفته</v-btn
         >
       </v-col>
     </v-row>
@@ -114,7 +104,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions(["simpleSearch"]),
+    ...mapActions(["simpleSearch", "setSearchType"]),
     search() {
       let params = {
         searchtext: this.searchText,
