@@ -48,15 +48,6 @@
                   <p class="mb-0" v-if="item.publishDate">
                     سال نشر: {{ cleanDate(item.publishDate) }}
                   </p>
-                  <p
-                    class="mb-0"
-                    v-if="
-                      item.materialType &&
-                      docTypes.some((e) => e.code === item.materialType)
-                    "
-                  >
-                    {{ showMaterialType(item.materialType) }}
-                  </p>
                 </v-list-item-subtitle>
               </v-list-item-content>
 
