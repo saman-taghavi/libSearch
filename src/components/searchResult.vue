@@ -52,9 +52,21 @@
               </v-list-item-content>
 
               <v-list-item-action>
-                <v-btn @click="goTolib(item)" icon depressed color="primary">
-                  <v-icon>mdi-link</v-icon>
-                </v-btn>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      @click="goTolib(item)"
+                      v-bind="attrs"
+                      v-on="on"
+                      icon
+                      depressed
+                      color="primary"
+                    >
+                      <v-icon>mdi-link</v-icon>
+                    </v-btn>
+                  </template>
+                  <span>مشاهده در کتابخانه</span>
+                </v-tooltip>
               </v-list-item-action>
             </v-list-item>
 
