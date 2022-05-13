@@ -31,7 +31,7 @@
             <v-list-item :disabled="isLoading" :key="item.id">
               <v-list-item-avatar tile size="72">
                 <v-img
-                  src="http://placehold.jp/469213/ffffff/150x150.png?text=%DA%A9%D8%A7%D9%88%D8%B1%20%DA%A9%D8%AA%D8%A7%D8%A8"
+                  src="https://placehold.jp/ececec/ececec/150x150.png"
                 ></v-img>
               </v-list-item-avatar>
               <v-list-item-content>
