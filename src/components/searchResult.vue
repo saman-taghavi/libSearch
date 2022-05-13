@@ -24,7 +24,7 @@
           v-if="!isLoading"
           :bench="50"
           :items="searchResults.biblioList"
-          max-height="70vh"
+          max-height="900px"
           item-height="100%"
         >
           <template v-slot:default="{ item }">

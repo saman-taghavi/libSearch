@@ -1,8 +1,30 @@
 <template>
   <div>
-    <component :is="currentSearch" />
+    <component :is="currentSearch" class="pb-2" />
     <!-- search result -->
-    <SearchResult v-if="!!Object.keys(searchResults).length" />
+    <div v-if="!!Object.keys(searchResults).length">
+      <v-row dense justify="space-around">
+        <v-col cols="4">
+          <!-- <faucets
+            :faucet="searchResults['organizationFacet']"
+            title="پایگاه منابع"
+          ></faucets> -->
+          <faucets
+            class="mt-2"
+            :faucet="searchResults['docTypeFacet']"
+            title="نوع مدرک"
+          ></faucets>
+          <faucets
+            class="mt-2"
+            :faucet="searchResults['authorFacet']"
+            title="پدیدآوران مرتبط"
+          ></faucets>
+        </v-col>
+        <v-col cols="7">
+          <SearchResult />
+        </v-col>
+      </v-row>
+    </div>
     <v-row v-else no-gutters class="pa-5" justify="space-around">
       <v-col cols="3" class="pa-1" v-for="n in 14" :key="n">
         <v-img
@@ -22,10 +44,11 @@ import SimpleSearch from "@/components/simpleSearch.vue";
 import advSearch from "@/components/advSearch.vue";
 import SearchResult from "@/components/searchResult.vue";
 import { mapGetters, mapState } from "vuex";
+import faucet from "@/components/faucets.vue";
 export default {
   name: "Home",
 
-  components: { SimpleSearch, SearchResult, advSearch },
+  components: { SimpleSearch, SearchResult, advSearch, faucet },
   data() {
     return {
       model: "",
