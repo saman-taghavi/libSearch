@@ -106,8 +106,7 @@ export default {
     etoX,
     Sorter,
   },
-
-  Sorterdata() {
+  data() {
     return {
       searchText: "",
     };

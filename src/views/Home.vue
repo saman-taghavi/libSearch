@@ -51,12 +51,12 @@
       </v-row>
     </div>
     <v-row v-else no-gutters class="pa-5" justify="space-around">
-      <v-col cols="3" class="pa-1" v-for="n in 14" :key="n">
+      <v-col cols="3" class="pa-1" v-for="(n, index) in pics" :key="index">
         <v-img
           v-ripple
-          @click="log(n)"
+          @click="setSearch(n)"
           :aspect-ratio="16 / 9"
-          :src="getImageSrc(n)"
+          :src="getImageSrc(index + 1)"
           contain
         ></v-img>
       </v-col>
@@ -79,6 +79,18 @@ export default {
       model: "",
       loading: false,
       show: false,
+      pics: [
+        { name: "books", select: ["FF", "FL", "FA"] },
+        { select: ["JL"], name: "رویداد ها" },
+        { select: ["WP"], name: "اولویت پژوهشی" },
+        { select: ["ZL", "ZF"], name: "پایان نامه " },
+        { select: ["IF", "IL"], name: "نشریه ها" },
+        { select: ["WF", "WL"], name: "طرح" },
+        { select: ["GL", "GF"], name: "مقالات " },
+        { select: ["GL", "HL", "GF", "HF"], name: "مقالات همایش" },
+        { select: ["DP"], name: "قوانین" },
+        { select: ["JF"], name: "رویداد داخلی" },
+      ],
     };
   },
   computed: {
@@ -92,12 +104,8 @@ export default {
     getImageSrc(n) {
       return `${this.basePath}images/${n}.jpg`;
     },
-    log(n) {
-      console.log(
-        "%c n =>",
-        "background: #2ecc71;border-radius: 0.5em;color: white;font-weight: bold;padding: 2px 0.5em",
-        { n }
-      );
+    setSearch(n) {
+      this.$store.commit("SET_SIMPLE_SEARCH_DOCTYPES", n.select);
     },
   },
 };
