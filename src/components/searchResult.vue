@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row dense justify="space-between">
-      <v-col v-if="totalResultsNumber > 1" class="text-center">
+      <v-col v-if="totalResultsNumber >= 1" class="text-center">
         <v-pagination
           v-model="page"
           @click="goPage(page)"

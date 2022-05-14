@@ -204,6 +204,21 @@ export default new Vuex.Store({
         : state.searchResult?.totalResult;
     },
     searchResults(state) {
+      for (let item in state.searchResult) {
+        if (
+          item != "organizationFacet" &&
+          state.searchResult[item].constructor === Object
+        ) {
+          console.log(
+            `%c item
+          ,  =>`,
+            "background: #2ecc71;border-radius: 0.5em;color: white;font-weight: bold;padding: 2px 0.5em",
+            item,
+            state.searchResult[item]
+          );
+          state.searchResult[item] = [state.searchResult[item]];
+        }
+      }
       return state.searchResult;
     },
     totalResultsNumber(state, getters) {

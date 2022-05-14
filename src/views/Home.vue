@@ -26,21 +26,25 @@
           </v-card>
           <faucets
             class="mt-2"
+            v-if="searchResults['docTypeFacet']"
             :faucet="searchResults['docTypeFacet']"
             title="نوع مدرک"
           ></faucets>
           <faucets
+            v-if="searchResults['authorFacet']"
             class="mt-2"
             :faucet="searchResults['authorFacet']"
             title="پدیدآوران مرتبط"
           ></faucets>
           <faucets
+            v-if="searchResults['subjectFacet']"
             class="mt-2"
             :faucet="searchResults['subjectFacet']"
             title="موضوعات مرتبط"
           ></faucets>
           <faucets
             class="mt-2"
+            v-if="searchResults['publisherFacet']"
             :faucet="searchResults['publisherFacet']"
             title="ناشران مرتبط"
           ></faucets>
