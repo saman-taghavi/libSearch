@@ -1,12 +1,19 @@
 <template>
   <v-row justify="space-between" align="center" align-content="center">
     <v-col>
+      <v-combobox :items="sizes" v-model="size" label="نمایش"> </v-combobox>
+    </v-col>
+    <v-col>
       <v-select
         :items="sortOrder"
         item-text="name"
         item-value="val"
         v-model="order"
         label="ترتیب جستجو"
+        :menu-props="{
+          offsetY: true,
+          transition: 'slide-y-transition',
+        }"
       ></v-select>
     </v-col>
     <v-col>
@@ -16,6 +23,10 @@
         item-value="val"
         v-model="by"
         label="بر اساس"
+        :menu-props="{
+          offsetY: true,
+          transition: 'slide-y-transition',
+        }"
       ></v-select>
     </v-col>
   </v-row>
@@ -38,6 +49,8 @@ export default {
         { name: "سال نشر", val: "publishDate" },
       ],
       by: "title",
+      size: 50,
+      sizes: [10, 50, 100],
     };
   },
   computed: {
@@ -47,7 +60,7 @@ export default {
     this.sortEm();
   },
   methods: {
-    ...mapActions(["sortResult"]),
+    ...mapActions(["sortResult", "simpleSearch"]),
     sortEm() {
       this.sortResult({ by: this.by, order: this.order });
     },
@@ -62,6 +75,9 @@ export default {
     },
     isLoading: function (newQuestion, oldQuestion) {
       this.sortEm();
+    },
+    size: function (newVal, oldQuestion) {
+      this.simpleSearch({ size: newVal });
     },
   },
 };

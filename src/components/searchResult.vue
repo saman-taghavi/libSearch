@@ -29,13 +29,23 @@
         >
           <template v-slot:default="{ item }">
             <v-list-item :disabled="isLoading" :key="item.id">
+              <v-checkbox
+                :value="item"
+                hide-details
+                @change="selectResult(item)"
+                class="shrink mr-2 mt-0"
+              ></v-checkbox>
               <v-list-item-avatar tile size="72">
                 <v-img
                   src="https://placehold.jp/ececec/ececec/150x150.png"
                 ></v-img>
               </v-list-item-avatar>
               <v-list-item-content>
-                <v-list-item-title>
+                <v-list-item-title
+                  @click="goTolib(item)"
+                  style="cursor: pointer"
+                  class="hover-highlite"
+                >
                   {{ item.title }}
                 </v-list-item-title>
                 <v-list-item-subtitle>
@@ -83,62 +93,6 @@
         </div>
       </v-col>
     </v-row>
-    <v-row
-      v-else
-      justify="center"
-      align="center"
-      align-content="center"
-      v-for="(result, index) in searchResults.biblioList"
-      :key="index"
-      class="pt-6"
-    >
-      <v-col lg="6">
-        <v-row>
-          <v-col cols="3">
-            <v-avatar size="72" tile>
-              <v-img
-                contain
-                src="http://placehold.jp/469213/ffffff/150x150.png?text=%DA%A9%D8%A7%D9%88%D8%B1%20%DA%A9%D8%AA%D8%A7%D8%A8"
-              ></v-img>
-            </v-avatar>
-          </v-col>
-          <v-col cols="9">
-            <v-card @click="goTolib(result)">
-              <v-card-title>
-                <p class="mb-0 fix-word-break" v-if="result.title">
-                  {{ result.title }}
-                </p>
-              </v-card-title>
-              <v-card-subtitle class="pb-0">
-                <p class="mb-0" v-if="result.mainEntry">
-                  نویسنده: {{ result.mainEntry }}
-                </p>
-                <p class="mb-0" v-if="result.publisherName">
-                  ناشر: {{ result.publisherName }}
-                </p>
-                <p class="mb-0" v-if="result.publishDate">
-                  سال نشر: {{ cleanDate(result.publishDate) }}
-                </p>
-                <p
-                  class="mb-0"
-                  v-if="
-                    result.materialType &&
-                    docTypes.some((e) => e.code === result.materialType)
-                  "
-                >
-                  {{ showMaterialType(result.materialType) }}
-                </p>
-              </v-card-subtitle>
-              <v-card-actions>
-                <v-btn @click="goTolib(result)" depressed color="primary">
-                  مشاهده در کتابخانه
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-col>
-    </v-row>
     <v-row dense justify="space-between">
       <v-col
         v-if="totalResultsNumber > 1"
@@ -157,7 +111,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
 export default {
   name: "searchResult",
   data() {
@@ -188,6 +142,7 @@ export default {
   },
   methods: {
     ...mapActions(["getPage", "simpleSearch"]),
+    ...mapMutations(["SET_SELECTED_RESULTS"]),
     goTolib(item) {
       let url = `http://library.alzahra.ac.ir:8080/site/catalogue/${item.id}`;
       window.open(url, "_blank").focus();
@@ -212,8 +167,20 @@ export default {
         x
       );
     },
+    selectResult(result) {
+      console.log(
+        `%c e =>`,
+        "background: #2ecc71;border-radius: 0.5em;color: white;font-weight: bold;padding: 2px 0.5em",
+        result
+      );
+      this.SET_SELECTED_RESULTS(result);
+    },
   },
 };
 </script>
 
-<style></style>
+<style>
+.hover-highlite:hover {
+  color: green;
+}
+</style>

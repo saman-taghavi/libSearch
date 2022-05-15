@@ -113,6 +113,7 @@ export default new Vuex.Store({
     isAdvSearch: false,
     isLoading: false,
     advSearchFields: searchFields,
+    selectedResults: [],
   },
 
   mutations: {
@@ -133,6 +134,16 @@ export default new Vuex.Store({
     },
     SET_SORTED_RESULT(state, sortedbiblio) {
       state.searchResult["biblioList"] = sortedbiblio;
+    },
+    SET_SELECTED_RESULTS(state, result) {
+      const index = state.selectedResults.findIndex((object) => {
+        return object === result;
+      });
+      if (index > -1) {
+        state.selectedResults.splice(index, 1);
+      } else {
+        state.selectedResults.push(result);
+      }
     },
   },
 
@@ -196,6 +207,9 @@ export default new Vuex.Store({
 
       commit("SET_SORTED_RESULT", sortedbiblio);
     },
+    async searchAgain({ dispatch, state }) {
+      await dispatch("simpleSearch", state.simpleSearch.params);
+    },
   },
   getters: {
     totalResults(state) {
@@ -209,13 +223,6 @@ export default new Vuex.Store({
           item != "organizationFacet" &&
           state.searchResult[item].constructor === Object
         ) {
-          console.log(
-            `%c item
-          ,  =>`,
-            "background: #2ecc71;border-radius: 0.5em;color: white;font-weight: bold;padding: 2px 0.5em",
-            item,
-            state.searchResult[item]
-          );
           state.searchResult[item] = [state.searchResult[item]];
         }
       }
@@ -232,8 +239,12 @@ export default new Vuex.Store({
       return Math.ceil(params.first / params.size);
     },
     totalPages(state) {
+      let params = state.simpleSearch.params;
       let results = state.searchResult?.totalResult ?? 0;
-      return Math.ceil(results / 50);
+      return Math.ceil(results / params.size);
+    },
+    selectedResults(state) {
+      return state.selectedResults;
     },
   },
 

@@ -18,33 +18,29 @@ import { utils, writeFile } from "xlsx/xlsx";
 export default {
   name: "etoX",
   data: () => ({
-    Datas: {
-      // We will make a Workbook contains 2 Worksheets
-      animals: [
-        { name: "cat", category: "animal" },
-        { name: "dog", category: "animal" },
-        { name: "pig", category: "animal" },
-      ],
-    },
+    // We will make a Workbook contains 2 Worksheets
   }),
   computed: {
-    ...mapGetters(["searchResults"]),
+    ...mapGetters(["selectedResults"]),
     excelData() {
       let result = [];
-      let books = this.searchResults?.biblioList;
-      if (this.searchResults?.biblioList) {
+      let books = this.selectedResults;
+      if (books) {
         for (let item in books) {
           let row = {};
-          row["id"] = books[item]["id"];
           row["عنوان"] = books[item]["title"];
+          row["نویسنده"] = books[item]["mainEntry"];
           row["ناشر"] = books[item]["publisherName"];
           row["تاریخ نشر"] = books[item]["publishDate"];
+          row[
+            "لینک کتابخانه"
+          ] = `http://library.alzahra.ac.ir:8080/site/catalogue/${books[item]["id"]}`;
           //   row["هم اکنون موجود است؟"] =
           //     books[item]["hasHolding"] === false ? "در دست امانت" : "موجود است";
           result.push(row);
         }
         return result;
-      }
+      } 
     },
   },
   methods: {
