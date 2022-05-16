@@ -81,7 +81,7 @@
         cols="3"
         order="3"
         align="center"
-        v-if="searchResults['biblioList']"
+        v-if="searchResults['biblioList'] || isFaucetSearch"
       >
         <v-btn @click="resetSearch" :disabled="isLoading" color="info"
           >بازگشت</v-btn
@@ -128,7 +128,7 @@ export default {
   },
   computed: {
     ...mapState(["docTypes", "isLoading"]),
-    ...mapGetters(["totalResults", "searchResults"]),
+    ...mapGetters(["totalResults", "searchResults", "isFaucetSearch"]),
     selectedDocTypes: {
       get() {
         return this.$store.state.simpleSearch.selectedDocTypes;

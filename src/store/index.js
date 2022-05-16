@@ -227,6 +227,9 @@ export default new Vuex.Store({
     selectedResults(state) {
       return state.selectedResults;
     },
+    isFaucetSearch({ simpleSearch }) {
+      return Object.keys(simpleSearch.params).length > 6
+    },
   },
 
   modules: {
