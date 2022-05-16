@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row dense justify="space-between">
-      <v-col v-if="totalResultsNumber >= 1" class="text-center">
+      <v-col v-if="totalResultsNumber > 1" class="text-center">
         <v-pagination
           v-model="page"
           @click="goPage(page)"
@@ -9,7 +9,7 @@
           circle
         ></v-pagination>
       </v-col>
-      <v-col v-else>
+      <v-col v-if="!totalResultsNumber">
         <v-alert class="text-center" color="green">نتیجه ای پیدا نشد!</v-alert>
       </v-col>
     </v-row>
