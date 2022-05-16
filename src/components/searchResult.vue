@@ -33,9 +33,9 @@
                 :value="item"
                 hide-details
                 @change="selectResult(item)"
-                class="shrink mr-2 mt-0"
+                class="ma-0 pa-0"
               ></v-checkbox>
-              <v-list-item-avatar tile size="72">
+              <v-list-item-avatar class="mx-1" tile size="72">
                 <v-img
                   src="https://placehold.jp/ececec/ececec/150x150.png"
                 ></v-img>
