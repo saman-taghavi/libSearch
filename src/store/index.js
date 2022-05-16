@@ -82,6 +82,7 @@ export default new Vuex.Store({
     isLoading: false,
     advSearchFields: searchFields,
     selectedResults: [],
+    faucetLevel: 1,
   },
 
   mutations: {
@@ -112,6 +113,9 @@ export default new Vuex.Store({
       } else {
         state.selectedResults.push(result);
       }
+    },
+    SET_FAUCET_LEVEL(state) {
+      state.faucetLevel++;
     },
   },
 
