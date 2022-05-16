@@ -117,6 +117,15 @@ export default new Vuex.Store({
     SET_FAUCET_LEVEL(state) {
       state.faucetLevel++;
     },
+    RESET_SEARCH(state) {
+      state.simpleSearch.params = {
+        SearchField: "",
+        size: "50",
+        first: 0,
+        workgroup: 20,
+      };
+      state.searchResult = {};
+    },
   },
 
   actions: {

@@ -68,14 +68,29 @@
     >
       <!-- search btn -->
       <v-col md="2" cols="3" order="3" align="center">
-        <v-btn @click="search" :disabled="isLoading" color="success"
+        <v-btn
+          @click="search"
+          :disabled="isLoading"
+          color="success"
+          class="mx-auto"
           >جستجو</v-btn
+        >
+      </v-col>
+      <v-col
+        md="2"
+        cols="3"
+        order="3"
+        align="center"
+        v-if="searchResults['biblioList']"
+      >
+        <v-btn @click="resetSearch" :disabled="isLoading" color="info"
+          >بازگشت</v-btn
         >
       </v-col>
       <v-col
         v-if="searchResults['biblioList']"
         md="2"
-        cols="3"
+        cols="4"
         order="3"
         align="center"
       >
@@ -142,6 +157,10 @@ export default {
         first: 0,
       };
       this.simpleSearch(params);
+    },
+    resetSearch() {
+      this.searchText = "";
+      this.$store.commit("RESET_SEARCH");
     },
   },
 };
