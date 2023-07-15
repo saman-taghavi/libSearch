@@ -33,8 +33,8 @@ dependencies:
     specifier: ^0.3.0
     version: 0.3.0
   vuetify:
-    specifier: ^2.5.8
-    version: 2.6.3(vue@2.6.14)
+    specifier: ^2.6.10
+    version: 2.6.10(vue@2.6.14)
   vuex:
     specifier: ^3.6.2
     version: 3.6.2(vue@2.6.14)
@@ -3044,8 +3044,8 @@ packages:
     resolution: {integrity: sha512-x2284lgYvjOMj3Za7kqzRcUSxBboHqtgRE2zlos1qWaOye5yUmHn42LB1250NJBLRwEcdrB0JRwyPTEPhfQjiQ==}
     dev: false
 
-  /vuetify@2.6.3(vue@2.6.14):
-    resolution: {integrity: sha512-Zfiz2DZnp1DvxqGaSCGqGjv4mPNAurJJ5Xwy7bzNzIySGLlRdlO8UH6aNWnSgfaAsLP3voxadSGDm6tKM8Ys7w==}
+  /vuetify@2.6.10(vue@2.6.14):
+    resolution: {integrity: sha512-fgUeRDDCwYkwu6WGEEKGe7IdfzOsXJCZGrqkn1pcS2ycuoDL8mR2/dejH5iFNnBY6MnsT365PAGn0J+9otjfQg==}
     peerDependencies:
       vue: ^2.6.4
     dependencies:
